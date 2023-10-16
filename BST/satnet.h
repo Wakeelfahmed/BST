@@ -6,8 +6,8 @@ using namespace std;
 class Grader;//this class is for grading purposes, no need to do anything
 class Tester;//this is your tester class, you add your test functions in this class
 class SatNet;
-const int MINID = 10000;
-const int MAXID = 99999;
+const int MINID = 1000;    //10000
+const int MAXID = 9999;    //99999
 enum STATE {ACTIVE, DEORBITED, DECAYING};
 enum ALT {MI208, MI215, MI340, MI350};  // altitude in miles
 enum INCLIN {I48, I53, I70, I97};       // inclination in degrees
@@ -100,13 +100,16 @@ class SatNet{
     // overloaded assignment operator
     const SatNet & operator=(const SatNet & rhs);
     void insert(const Sat& satellite);
+    void clearHelper(Sat* node);
     void clear();
     void remove(int id);
     void dumpTree() const;
     void listSatellites() const;
     bool setState(int id, STATE state);
-    void removeDeorbited();//removes all deorbited satellites from the tree
-    bool findSatellite(int id) const;//returns true if the satellite is in tree
+    void removeDeorbited();
+    //removes all deorbited satellites from the tree
+    bool findSatellite(int id) const;
+    //returns true if the satellite is in tree
     int countSatellites(INCLIN degree) const;
     
     private:
@@ -114,9 +117,16 @@ class SatNet{
     //helper for recursive traversal
     void dump(Sat* satellite) const;
 
+
     // ***************************************************
     // Any private helper functions must be delared here!
     // ***************************************************
-    
+    Sat* removeHelper(Sat* node, int id);
+    Sat* insertHelper(Sat* node, const Sat& satellite);
+    void listSatellitesHelper(Sat* node) const;
+    int countSatellitesHelper(Sat* node, INCLIN degree) const;
+    bool setStateHelper(Sat* node, int id, STATE state);
+    bool findSatelliteHelper(Sat* node, int id) const;
+    Sat* minValueNode(Sat* node);
 };
 #endif
