@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.cpp" />
+    <ClCompile Include="mytest.cpp" />
     <ClCompile Include="satnet.cpp" />
   </ItemGroup>
   <ItemGroup>

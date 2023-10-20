@@ -97,6 +97,7 @@ class SatNet{
     friend class Tester;
     SatNet();
     ~SatNet();
+    Sat* deepCopy(const Sat* node);
     // overloaded assignment operator
     const SatNet & operator=(const SatNet & rhs);
     void insert(const Sat& satellite);
@@ -106,6 +107,7 @@ class SatNet{
     void dumpTree() const;
     void listSatellites() const;
     bool setState(int id, STATE state);
+    Sat* removeDeorbitedHelper(Sat* node);
     void removeDeorbited();
     //removes all deorbited satellites from the tree
     bool findSatellite(int id) const;

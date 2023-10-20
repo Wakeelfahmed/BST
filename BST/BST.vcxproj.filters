@@ -26,6 +26,9 @@
     <ClCompile Include="satnet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mytest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="driver.txt" />

@@ -223,8 +223,27 @@ bool SatNet::setStateHelper(Sat* node, int id, STATE state) {
 bool SatNet::setState(int id, STATE state) {
 	return setStateHelper(m_root, id, state);
 }
-void SatNet::removeDeorbited() {
 
+Sat* SatNet::removeDeorbitedHelper(Sat* node) {
+	if (node == nullptr) {
+		return nullptr;
+	}
+
+	// Recursively remove deorbited satellites from left and right subtrees
+	node->setLeft(removeDeorbitedHelper(node->getLeft()));
+	node->setRight(removeDeorbitedHelper(node->getRight()));
+
+	// If the current node is deorbited, delete it
+	if (node->getState() == DEORBITED) {
+		delete node;
+		return nullptr;
+	}
+
+	return node;
+}
+void SatNet::removeDeorbited() {
+	// Implement the removeDeorbited method to remove all satellites with DEORBITED state
+	m_root = removeDeorbitedHelper(m_root);
 }
 bool SatNet::findSatelliteHelper(Sat* node, int id) const {
 	if (node == nullptr) {
@@ -245,13 +264,28 @@ bool SatNet::findSatellite(int id) const {
 	// Implement the findSatellite method to check if a satellite with a given id exists in the tree
 	return findSatelliteHelper(m_root, id);
 }
+// Helper function to perform a deep copy of the tree
+Sat* SatNet::deepCopy(const Sat* node) {
+	if (node == nullptr) {
+		return nullptr;
+	}
+
+	Sat* newNode = new Sat(node->getID(), node->getAlt(), node->getInclin(), node->getState());
+	newNode->setLeft(deepCopy(node->getLeft()));
+	newNode->setRight(deepCopy(node->getRight()));
+	newNode->setHeight(std::max(height(newNode->getLeft()), height(newNode->getRight())) + 1);
+
+	return newNode;
+}
 const SatNet& SatNet::operator=(const SatNet& rhs) {
-	// Implement the assignment operator to create a deep copy of rhs
-	// Make sure to handle memory properly
 	if (this != &rhs) {
-		clear(); // Clear the current tree
+		// Clear the current tree
+		clear();
 
 		// Implement copying logic here (deep copy)
+		if (rhs.m_root) {
+			m_root = deepCopy(rhs.m_root);
+		}
 	}
 	return *this;
 }
