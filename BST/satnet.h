@@ -8,127 +8,127 @@ class Tester;//this is your tester class, you add your test functions in this cl
 class SatNet;
 const int MINID = 1000;    //10000
 const int MAXID = 9999;    //99999
-enum STATE {ACTIVE, DEORBITED, DECAYING};
-enum ALT {MI208, MI215, MI340, MI350};  // altitude in miles
-enum INCLIN {I48, I53, I70, I97};       // inclination in degrees
+enum STATE { ACTIVE, DEORBITED, DECAYING };
+enum ALT { MI208, MI215, MI340, MI350 };  // altitude in miles
+enum INCLIN { I48, I53, I70, I97 };       // inclination in degrees
 #define DEFAULT_HEIGHT 0
 #define DEFAULT_ID 0
 #define DEFAULT_INCLIN I48
 #define DEFAULT_ALT MI208
 #define DEFAULT_STATE ACTIVE
-class Sat{
-    public:
-    friend class SatNet;
-    friend class Grader;
-    friend class Tester;
-    Sat(int id, ALT alt=DEFAULT_ALT, INCLIN inclin = DEFAULT_INCLIN, STATE state = DEFAULT_STATE)
-        :m_id(id),m_altitude(alt), m_inclin(inclin), m_state(state) {
-            m_left = nullptr;
-            m_right = nullptr;
-            m_height = DEFAULT_HEIGHT;
-        }
-    Sat(){
-        m_id = DEFAULT_ID;
-        m_altitude = DEFAULT_ALT;
-        m_inclin = DEFAULT_INCLIN;
-        m_state = DEFAULT_STATE;
-        m_left = nullptr;
-        m_right = nullptr;
-        m_height = DEFAULT_HEIGHT;
-    }
-    int getID() const {return m_id;}
-    STATE getState() const {return m_state;}
-    string getStateStr() const {
-        string text = "";
-        switch (m_state){
-            case ACTIVE:text = "Active";break;
-            case DEORBITED:text = "Deorbited";break;
-            case DECAYING:text = "Decaying";break;
-            default:text = "UNKNOWN";break;
-        }
-        return text;
-    }
-    INCLIN getInclin() const {return m_inclin;}
-    string getInclinStr() const {
-        string text = "";
-        switch (m_inclin){
-            case I48:text = "48 degrees";break;
-            case I53:text = "53 degrees";break;
-            case I70:text = "70 degrees";break;
-            case I97:text = "97 degrees";break;
-            default:text = "UNKNOWN";break;
-        }
-        return text;
-    }
-    ALT getAlt() const {return m_altitude;}
-    string getAltStr() const {
-        string text = "";
-        switch (m_altitude){
-            case MI208:text = "208 miles";break;
-            case MI215:text = "215 miles";break;
-            case MI340:text = "340 miles";break;
-            case MI350:text = "350 miles";break;
-            default:text = "UNKNOWN";break;
-        }
-        return text;
-    }
-    int getHeight() const {return m_height;}
-    Sat* getLeft() const {return m_left;}
-    Sat* getRight() const {return m_right;}
-    void setID(const int id){m_id=id;}
-    void setState(STATE state){m_state=state;}
-    void setInclin(INCLIN degree){m_inclin=degree;}
-    void setAlt(ALT altitude){m_altitude=altitude;}
-    void setHeight(int height){m_height=height;}
-    void setLeft(Sat* left){m_left=left;}
-    void setRight(Sat* right){m_right=right;}
-    private:
-    int m_id;
-    ALT m_altitude;
-    INCLIN m_inclin;
-    STATE m_state;
-    Sat* m_left;    //the pointer to the left child in the BST
-    Sat* m_right;   //the pointer to the right child in the BST
-    int m_height;   //the height of node in the BST
+class Sat {
+public:
+	friend class SatNet;
+	friend class Grader;
+	friend class Tester;
+	Sat(int id, ALT alt = DEFAULT_ALT, INCLIN inclin = DEFAULT_INCLIN, STATE state = DEFAULT_STATE)
+		:m_id(id), m_altitude(alt), m_inclin(inclin), m_state(state) {
+		m_left = nullptr;
+		m_right = nullptr;
+		m_height = DEFAULT_HEIGHT;
+	}
+	Sat() {
+		m_id = DEFAULT_ID;
+		m_altitude = DEFAULT_ALT;
+		m_inclin = DEFAULT_INCLIN;
+		m_state = DEFAULT_STATE;
+		m_left = nullptr;
+		m_right = nullptr;
+		m_height = DEFAULT_HEIGHT;
+	}
+	int getID() const { return m_id; }
+	STATE getState() const { return m_state; }
+	string getStateStr() const {
+		string text = "";
+		switch (m_state) {
+		case ACTIVE:text = "Active"; break;
+		case DEORBITED:text = "Deorbited"; break;
+		case DECAYING:text = "Decaying"; break;
+		default:text = "UNKNOWN"; break;
+		}
+		return text;
+	}
+	INCLIN getInclin() const { return m_inclin; }
+	string getInclinStr() const {
+		string text = "";
+		switch (m_inclin) {
+		case I48:text = "48 degrees"; break;
+		case I53:text = "53 degrees"; break;
+		case I70:text = "70 degrees"; break;
+		case I97:text = "97 degrees"; break;
+		default:text = "UNKNOWN"; break;
+		}
+		return text;
+	}
+	ALT getAlt() const { return m_altitude; }
+	string getAltStr() const {
+		string text = "";
+		switch (m_altitude) {
+		case MI208:text = "208 miles"; break;
+		case MI215:text = "215 miles"; break;
+		case MI340:text = "340 miles"; break;
+		case MI350:text = "350 miles"; break;
+		default:text = "UNKNOWN"; break;
+		}
+		return text;
+	}
+	int getHeight() const { return m_height; }
+	Sat* getLeft() const { return m_left; }
+	Sat* getRight() const { return m_right; }
+	void setID(const int id) { m_id = id; }
+	void setState(STATE state) { m_state = state; }
+	void setInclin(INCLIN degree) { m_inclin = degree; }
+	void setAlt(ALT altitude) { m_altitude = altitude; }
+	void setHeight(int height) { m_height = height; }
+	void setLeft(Sat* left) { m_left = left; }
+	void setRight(Sat* right) { m_right = right; }
+private:
+	int m_id;
+	ALT m_altitude;
+	INCLIN m_inclin;
+	STATE m_state;
+	Sat* m_left;    //the pointer to the left child in the BST
+	Sat* m_right;   //the pointer to the right child in the BST
+	int m_height;   //the height of node in the BST
 };
-class SatNet{
-    public:
-    friend class Grader;
-    friend class Tester;
-    SatNet();
-    ~SatNet();
-    Sat* deepCopy(const Sat* node);
-    // overloaded assignment operator
-    const SatNet & operator=(const SatNet & rhs);
-    void insert(const Sat& satellite);
-    void clearHelper(Sat* node);
-    void clear();
-    void remove(int id);
-    void dumpTree() const;
-    void listSatellites() const;
-    bool setState(int id, STATE state);
-    Sat* removeDeorbitedHelper(Sat* node);
-    void removeDeorbited();
-    //removes all deorbited satellites from the tree
-    bool findSatellite(int id) const;
-    //returns true if the satellite is in tree
-    int countSatellites(INCLIN degree) const;
-    
-    private:
-    Sat* m_root;    //the root of the BST
-    //helper for recursive traversal
-    void dump(Sat* satellite) const;
+class SatNet {
+public:
+	friend class Grader;
+	friend class Tester;
+	SatNet();
+	~SatNet();
+	Sat* deepCopy(const Sat* node);
+	// overloaded assignment operator
+	const SatNet& operator=(const SatNet& rhs);
+	void insert(const Sat& satellite);
+	void clearHelper(Sat* node);
+	void clear();
+	void remove(int id);
+	void dumpTree() const;
+	void listSatellites() const;
+	bool setState(int id, STATE state);
+	Sat* removeDeorbitedHelper(Sat* node);
+	void removeDeorbited();
+	//removes all deorbited satellites from the tree
+	bool findSatellite(int id) const;
+	//returns true if the satellite is in tree
+	int countSatellites(INCLIN degree) const;
+
+private:
+	Sat* m_root;    //the root of the BST
+	//helper for recursive traversal
+	void dump(Sat* satellite) const;
 
 
-    // ***************************************************
-    // Any private helper functions must be delared here!
-    // ***************************************************
-    Sat* removeHelper(Sat* node, int id);
-    Sat* insertHelper(Sat* node, const Sat& satellite);
-    void listSatellitesHelper(Sat* node) const;
-    int countSatellitesHelper(Sat* node, INCLIN degree) const;
-    bool setStateHelper(Sat* node, int id, STATE state);
-    bool findSatelliteHelper(Sat* node, int id) const;
-    Sat* minValueNode(Sat* node);
+	// ***************************************************
+	// Any private helper functions must be delared here!
+	// ***************************************************
+	Sat* removeHelper(Sat* node, int id);
+	Sat* insertHelper(Sat* node, const Sat& satellite);
+	void listSatellitesHelper(Sat* node) const;
+	int countSatellitesHelper(Sat* node, INCLIN degree) const;
+	bool setStateHelper(Sat* node, int id, STATE state);
+	bool findSatelliteHelper(Sat* node, int id) const;
+	Sat* minValueNode(Sat* node);
 };
 #endif
