@@ -84,23 +84,20 @@ SatNet::~SatNet() { clear(); }
 Sat* SatNet::insertHelper(Sat* node, const Sat& satellite) {
 	if (node == nullptr) {
 		// Create a new node
-		//Sat sat;
 		return new Sat(satellite);
 	}
 
 	// Insertion based on the BST property
 	if (satellite.getID() < node->getID()) {
 		node->setLeft(insertHelper(node->getLeft(), satellite));
-		cout << "<";
 	}
 	else if (satellite.getID() > node->getID()) {
 		node->setRight(insertHelper(node->getRight(), satellite));
-		//cout << ">";
 	}
 	else {
 		// Duplicate ID, do not insert
-		//return node;
-		cout << "Dup found";
+		return node;
+		//cout << "Dup found";
 	}
 
 	// Update height
@@ -128,6 +125,7 @@ void SatNet::clear() {
 	clearHelper(m_root);
 	m_root = nullptr;
 }
+
 
 Sat* SatNet::removeHelper(Sat* node, int id) {
 	if (node == nullptr) {
@@ -157,49 +155,140 @@ Sat* SatNet::removeHelper(Sat* node, int id) {
 		Sat* temp = minValueNode(node->getRight());
 
 		// Copy the inorder successor's data to this node
-		*node = *temp;
+		node->setID(temp->getID());
+		node->setState(temp->getState());
+		node->setInclin(temp->getInclin());
+		node->setAlt(temp->getAlt());
 
-		// Delete the inorder successor and update the right subtree
+		// Recursively remove the inorder successor from the right subtree
 		node->setRight(removeHelper(node->getRight(), temp->getID()));
 	}
 
 	// Recalculate the height of the current node
-	node->setHeight(std::max(height(node->getLeft()), height(node->getRight())) + 1);
+	node->setHeight(1 + std::max(height(node->getLeft()), height(node->getRight())));
 
 	// Perform balancing operations
 	return balance(node);
 }
 
+
 //Sat* SatNet::removeHelper(Sat* node, int id) {
-//	if (node == nullptr)
-//		return nullptr;
-//
-//	if (id < node->getID())
-//		node->setLeft(removeHelper(node->getLeft(), id));
-//	else if (id > node->getID())
-//		node->setRight(removeHelper(node->getRight(), id));
-//	else {
-//		// Node with the ID to be deleted found
-//		if (node->getLeft() == nullptr || node->getRight() == nullptr) {
-//			Sat* temp = (node->getLeft() != nullptr) ? node->getLeft() : node->getRight();
-//			delete node; // Delete the current node
-//			return temp; // Return the child (may be nullptr)
-//		}
-//		else {
-//			Sat* temp = minValueNode(node->getRight());
-//			node->setID(temp->getID()); // Update node's data with the successor's data
-//			node->setRight(removeHelper(node->getRight(), temp->getID())); // Delete the successor
-//			return node; // Return the modified node
-//		}
-//	}
-//
 //	if (node == nullptr) {
 //		return node;
 //	}
 //
-//	// Update height and balance
-//	updateHeight(node);
+//	if (id < node->getID()) {
+//		node->setLeft(removeHelper(node->getLeft(), id));
+//	}
+//	else if (id > node->getID()) {
+//		node->setRight(removeHelper(node->getRight(), id));
+//	}
+//	else {
+//		// Node with only one child or no child
+//		if (node->getLeft() == nullptr) {
+//			Sat* temp = node->getRight();
+//			delete node;
+//			return temp;
+//		}
+//		else if (node->getRight() == nullptr) {
+//			Sat* temp = node->getLeft();
+//			delete node;
+//			return temp;
+//		}
+//
+//		// Node with two children, get the inorder successor (smallest in the right subtree)
+//		Sat* temp = minValueNode(node->getRight());
+//
+//		// Copy the inorder successor's data to this node
+//		*node = *temp;
+//
+//		// Delete the inorder successor and update the right subtree
+//		node->setRight(removeHelper(node->getRight(), temp->getID()));
+//
+//		// Explicitly delete the original node
+//		delete temp;
+//	}
+//
+//	// Recalculate the height of the current node
+//	node->setHeight(std::max(height(node->getLeft()), height(node->getRight())) + 1);
+//
+//	// Perform balancing operations
 //	return balance(node);
+//}
+
+
+
+//Sat* SatNet::removeHelper(Sat* node, int id) {
+//	if (node == nullptr) {
+//		return node;
+//	}
+//
+//	if (id < node->getID()) {
+//		node->setLeft(removeHelper(node->getLeft(), id));
+//	}
+//	else if (id > node->getID()) {
+//		node->setRight(removeHelper(node->getRight(), id));
+//	}
+//	else {
+//		// Node with only one child or no child
+//		if (node->getLeft() == nullptr) {
+//			Sat* temp = node->getRight();
+//			delete node;
+//			return temp;
+//		}
+//		else if (node->getRight() == nullptr) {
+//			Sat* temp = node->getLeft();
+//			delete node;
+//			return temp;
+//		}
+//
+//		// Node with two children, get the inorder successor (smallest in the right subtree)
+//		Sat* temp = minValueNode(node->getRight());
+//
+//		// Copy the inorder successor's data to this node
+//		*node = *temp;
+//
+//		// Delete the inorder successor and update the right subtree
+//		node->setRight(removeHelper(node->getRight(), temp->getID()));
+//	}
+//
+//	// Recalculate the height of the current node
+//	node->setHeight(std::max(height(node->getLeft()), height(node->getRight())) + 1);
+//
+//	// Perform balancing operations
+//	return balance(node);
+//}
+
+//Sat* SatNet::removeHelper(Sat* node, int id) {
+	//if (node == nullptr)
+	//	return nullptr;
+
+	//if (id < node->getID())
+	//	node->setLeft(removeHelper(node->getLeft(), id));
+	//else if (id > node->getID())
+	//	node->setRight(removeHelper(node->getRight(), id));
+	//else {
+	//	// Node with the ID to be deleted found
+	//	if (node->getLeft() == nullptr || node->getRight() == nullptr) {
+	//		Sat* temp = (node->getLeft() != nullptr) ? node->getLeft() : node->getRight();
+	//		delete node; // Delete the current node
+	//		return temp; // Return the child (may be nullptr)
+	//	}
+	//	else {
+	//		Sat* temp = minValueNode(node->getRight());
+	//		node->setID(temp->getID()); // Update node's data with the successor's data
+	//		node->setRight(removeHelper(node->getRight(), temp->getID())); // Delete the successor
+	//		return node; // Return the modified node
+	//	}
+	//}
+
+	//if (node == nullptr) {
+	//	return node;
+	//}
+
+	//// Update height and balance
+	//updateHeight(node);
+	//return balance(node);
 //}
 
 //Sat* SatNet::removeHelper(Sat* node, int id) {
@@ -263,12 +352,17 @@ void SatNet::remove(int id) {
 }
 Sat* SatNet::minValueNode(Sat* node) {
 	Sat* current = node;
-	//while (current->getLeft() != nullptr) {
-		//if (current != nullptr)
-			//delete current;
-		//current = current->getLeft();
-	//}
+	while (current->getLeft() != nullptr) {
+		current = current->getLeft();
+	}
 	return current;
+	//Sat* current = node;
+	//while (current->getLeft() != nullptr) {
+	//	if (current != nullptr)
+	//		delete current;
+	//	current = current->getLeft();
+	//}
+	//return current;
 }
 void SatNet::dumpTree() const {
 	dump(m_root);
